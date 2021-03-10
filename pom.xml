@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.begr</groupId>
 	<artifactId>vlsmfront</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0</version>
 	<name>vlsmfront</name>
 	<description>Front for VLSM API</description>
 	<properties>
