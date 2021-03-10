@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Calcul </title>
+
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+    <main role="main" class="container"style="max-width: 700px;">
+
+        <div class="text-center" style="margin: 20px 0px 20px 0px;">
+            <a href="https://coubiac.github.io" target="_blank"><img src="https://blog-download.s3.eu-west-3.amazonaws.com/logo-horizontal.png"></a><br>
+            <span class="text-secondary">Application de calcul de sous réseaux IPV4</span>
+        </div>
+        <div th:if="${error}" class="alert alert-danger" th:text="${error}" role="alert">
+                    Les erreurs s'affichent ici
+          </div>
+        <!--/*@thymesVar id="network" type="com.begr.vlsmfront.model.request.NetworkDetailRequestModel"*/-->
+        <form style="margin-bottom: 100px;" th:action="@{/}" method="post">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div id="cidr">
+                        <label for="cidr">Réseau principal</label>
+                        <div class="input-group mb-3">
+                            <input type="text" th:field="${network.cidr}" id="cidr" name="cidr" class="form-control m-input" placeholder="192.168.1.0/24" autocomplete="off">
+                        </div>
+                    </div>
+                    <div id="inputFormRow">
+                        <label for="reseau1">Liste des réseaux</label>
+                        <div class="input-group mb-3">
+                            <input th:field="${network.subnets[0].name}" id="reseau1" type="text" name="subnets[0].name" class="form-control m-input" placeholder="Nom du réseau" autocomplete="off">
+                            <input type="number" th:field="${network.subnets[0].neededSize}" name="subnets[0].neededSize" min="1" step="1" class="form-control m-input" placeholder="taille" autocomplete="off">
+                            <div class="input-group-append">                
+                                <button id="removeRow" type="button" class="btn btn-danger">Supprimer</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="newRow"></div>
+
+                    <button id="addRow" type="button" class="btn btn-info">Ajouter réseau</button>
+                    <button id="calc" type="submit" class="btn btn-success float-right">Calculer</button>
+                </div>
+            </div>
+        </form>
+    </main>
+    <footer class="bg-light text-center text-lg-start" style="bottom: 0; position: fixed; width: 100%;">
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2);">
+          © 2020 Copyright:
+          <a class="text-dark" href="https://coubiac.github.io">Coubiac</a>
+        </div>
+        <!-- Copyright -->
+      </footer>
+
+      <script th:inline="javascript">
+        var networkKey = 0
+        // add row
+        $("#addRow").click(function () {
+            networkKey++;
+            var html = '';
+            html += '<div id="inputFormRow">';
+            html += '<div class="input-group mb-3">';
+            html += '<input type="text" th:field="${NetworkDetailRequestModelsubnets['+networkKey+'].name}" name="subnets['+networkKey+'].name" class="form-control m-input" placeholder="Nom du réseau" autocomplete="off">';
+            html += '<input type="number" name="subnets['+networkKey+'].neededSize" min="1" step="1" class="form-control m-input" placeholder="taille" autocomplete="off">';
+            html += '<div class="input-group-append">';
+            html += '<button id="removeRow" type="button" class="btn btn-danger">Supprimer</button>';
+            html += '</div>';
+            html += '</div>';
+
+            $('#newRow').append(html);
+        });
+
+        // remove row
+        $(document).on('click', '#removeRow', function () {
+            $(this).closest('#inputFormRow').remove();
+            networkCount--;
+            console.log(networkCount)
+        });
+
+    </script>
+</body>
+</html>
